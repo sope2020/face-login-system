@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Bienvenido</title>
+  <style>
+    :root {
+      --font-family: 'Segoe UI', sans-serif;
+      --bg-gradient-start: #a8e063;
+      --bg-gradient-end: #56ab2f;
+      --primary-color: #3d7d1c;
+      --primary-accent: #4caf50;
+      --text-color: #1b3d1f;
+      --shadow-color: rgba(0, 0, 0, 0.25);
+      --container-width: 400px;
+      --border-radius: 15px;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 40px;
+      position: relative;
+    }
+
+    h2 {
+      color: var(--text-color);
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #2c3e50;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 25px;
+      border-radius: var(--border-radius);
+      box-shadow: 0 8px 25px var(--shadow-color);
+      text-align: center;
+      width: var(--container-width);
+      margin-top: 20px;
+      backdrop-filter: blur(5px);
+      position: relative;
+    }
+
+    select,
+    button {
+      margin: 10px 0;
+      padding: 10px 15px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      outline: none;
+      cursor: pointer;
+    }
+
+    button {
+      border: none;
+      background: linear-gradient(45deg, var(--primary-color), var(--primary-accent));
+      color: white;
+      font-weight: 600;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    #clock,
+    #countdown {
+      margin-top: 15px;
+      font-size: 20px;
+      font-weight: bold;
+      color: var(--text-color);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #history {
+      max-height: 200px;
+      overflow-y: auto;
+      background: #fff;
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      text-align: left;
+    }
+
+    .log-entry {
+      border-bottom: 1px solid #e0e0e0;
+      padding: 5px 0;
+    }
+
+    /* Botón consultas moderno en la esquina */
+    #consultas {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(10px);
+      padding: 10px 18px;
+      border-radius: 50px;
+      font-size: 14px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #consultas:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: scale(1.05);
+    }
+
+    /* Historial con estilo de tarjeta flotante */
+    #history {
+      position: absolute;
+      top: 70px;
+      right: 20px;
+      width: 300px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 12px;
+      border: none;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      padding: 15px;
+      font-size: 14px;
+      display: none;
+    }
+
+    #history.show {
+      display: block;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <h2>Bienvenido {{ name }}</h2>
+  <p>Has iniciado sesión con reconocimiento facial.</p>
+
+  <button id="consultas">Consultas</button>
+  <div id="history"></div>
+
+  <div class="container">
+    <h3>Control de Riego</h3>
+    <label for="tiempo">Tiempo estimado de riego:</label>
+    <select id="tiempo">
+      <option value="60">Baja Temperatura (1 min)</option>
+      <option value="120">Temperatura Normal (2 min)</option>
+      <option value="180">Alta Temperatura (3 min)</option>
+    </select>
+    <button id="iniciar">Iniciar</button>
+    <button id="parar" class="hidden">Parar</button>
+    <div id="countdown"></div>
+  </div>
+
+  <script>
+    const tiempoSelect = document.getElementById("tiempo");
+    const iniciarBtn = document.getElementById("iniciar");
+    const pararBtn = document.getElementById("parar");
+    const countdownEl = document.getElementById("countdown");
+    const historyEl = document.getElementById("history");
+    const consultasBtn = document.getElementById("consultas");
+
+    let countdown;
+    let timeLeft = 0;
+    let logs = [];
+
+    function updateCountdown() {
+      const minutes = Math.floor(timeLeft / 60);
+      const seconds = timeLeft % 60;
+      countdownEl.textContent = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+    }
+
+    function addLog(action) {
+      const now = new Date();
+      logs.push({
+        tiempo: tiempoSelect.options[tiempoSelect.selectedIndex].text,
+        accion: action,
+        fecha: now.toLocaleString()
+      });
+    }
+
+    function renderHistory() {
+      historyEl.innerHTML = logs.length
+        ? logs.map(log => `
+          <div class="log-entry">
+            <strong>${log.fecha}</strong><br>
+            Tiempo: ${log.tiempo}<br>
+            Acción: ${log.accion}
+          </div>`).join("")
+        : "<p>No hay registros todavía.</p>";
+    }
+
+    iniciarBtn.addEventListener("click", () => {
+      timeLeft = parseInt(tiempoSelect.value);
+      addLog("Inicio");
+      updateCountdown();
+      countdown = setInterval(() => {
+        timeLeft--;
+        updateCountdown();
+        if (timeLeft <= 0) {
+          clearInterval(countdown);
+          addLog("Riego terminado");
+          renderHistory();
+          pararBtn.classList.add("hidden");
+          iniciarBtn.classList.remove("hidden");
+        }
+      }, 1000);
+      iniciarBtn.classList.add("hidden");
+      pararBtn.classList.remove("hidden");
+    });
+
+    pararBtn.addEventListener("click", () => {
+      clearInterval(countdown);
+      addLog("Riego detenido");
+      renderHistory();
+      countdownEl.textContent = "";
+      iniciarBtn.classList.remove("hidden");
+      pararBtn.classList.add("hidden");
+    });
+
+    consultasBtn.addEventListener("click", () => {
+      renderHistory();
+      historyEl.classList.toggle("show");
+    });
+  </script>
+</body>
+
+</html>

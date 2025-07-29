@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Registro de Usuario</title>
+
+  <style>
+    :root {
+      --font-family: 'Segoe UI', sans-serif;
+      --bg-gradient-start: #a8e063; /* Verde claro */
+      --bg-gradient-end: #56ab2f;   /* Verde oscuro */
+      --primary-color: #3d7d1c;     /* Verde botón */
+      --primary-color-accent: #4caf50;
+      --text-color: #1b3d1f;
+      --shadow-color: rgba(0,0,0,0.25);
+      --container-width: 420px;
+      --border-radius: 18px;
+      --input-radius: 10px;
+      --button-radius: 10px;
+      --field-padding: 12px 16px;
+      --button-padding: 14px 28px;
+      --link-color: #2f6e20;
+      --danger-color: #e74c3c;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 60px;
+      margin: 0;
+      min-height: 100vh;
+    }
+
+    h1 {
+      color: var(--text-color);
+      font-size: 1.9rem;
+      margin-bottom: 28px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .form-container {
+      background: rgba(255,255,255,0.95);
+      padding: 40px 35px;
+      border-radius: var(--border-radius);
+      box-shadow: 0 8px 25px var(--shadow-color);
+      width: 100%;
+      max-width: var(--container-width);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(5px);
+    }
+
+    /* Gotas decorativas */
+    .form-container::before,
+    .form-container::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      z-index: 0;
+    }
+    .form-container::before {
+      top: -50px;
+      right: -40px;
+      width: 140px;
+      height: 140px;
+      background: rgba(86,171,47,0.20);
+    }
+    .form-container::after {
+      bottom: -60px;
+      left: -30px;
+      width: 110px;
+      height: 110px;
+      background: rgba(168,224,99,0.25);
+    }
+    .form-container * {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Icono planta */
+    .plant-icon {
+      width: 56px;
+      height: 56px;
+      margin-bottom: 18px;
+      color: var(--primary-color);
+    }
+
+    form {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    input {
+      width: 100%;
+      padding: var(--field-padding);
+      margin: 10px 0;
+      border-radius: var(--input-radius);
+      border: 1px solid #cfd8cf;
+      font-size: 16px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input:focus {
+      border-color: var(--primary-color-accent);
+      box-shadow: 0 0 0 3px rgba(76,175,80,0.25);
+    }
+
+    button {
+      padding: var(--button-padding);
+      background: linear-gradient(45deg, var(--primary-color), var(--primary-color-accent));
+      color: #fff;
+      border: none;
+      border-radius: var(--button-radius);
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      margin-top: 16px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      width: 100%;
+    }
+
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 22px;
+      color: var(--link-color);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    a:hover {
+      color: var(--primary-color-accent);
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Registro Facial</h1>
+
+  <div class="form-container">
+    <!-- Icono de planta -->
+    <svg class="plant-icon" xmlns="http://www.w3.org/2000/svg" fill="none"
+         viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
+         aria-hidden="true" role="img">
+      <path stroke-linecap="round" stroke-linejoin="round"
+        d="M12 20c4.418 0 8-1.79 8-4s-3.582-4-8-4-8 1.79-8 4 3.582 4 8 4zM12 12V4m0 0c1.5 0 2.5.5 3 1.5M12 4c-1.5 0-2.5.5-3 1.5" />
+    </svg>
+
+    <form action="/register" method="POST">
+      <input type="text" name="name" placeholder="Nombre" required>
+      <input type="text" name="surname" placeholder="Apellidos" required>
+      <input type="text" name="access_key" placeholder="Clave de acceso" required>
+      <input type="password" name="password" placeholder="Contraseña" required>
+      <button type="submit">Registrar y Capturar Rostro</button>
+    </form>
+
+    <a href="/">Volver al inicio</a>
+  </div>
+</body>
+</html>

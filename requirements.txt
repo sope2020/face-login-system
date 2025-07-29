@@ -1,0 +1,6 @@
+pip freeze > requirements.txt
+flask
+opencv-python
+face-recognition
+numpy
+gunicorn

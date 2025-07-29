@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <title id="page-title">Inicio de Sesión Facial</title>
+
+  <style>
+    :root {
+      --font-family: 'Segoe UI', sans-serif;
+      --bg-gradient-start: #a8e063; /* Verde claro */
+      --bg-gradient-end: #56ab2f;   /* Verde oscuro */
+      --primary-color: #3d7d1c;     /* Verde botón */
+      --text-color: #1b3d1f;        /* Verde oscuro texto */
+      --shadow-color: rgba(0, 0, 0, 0.25);
+      --container-width: 370px;
+      --border-radius: 18px;
+      --button-radius: 10px;
+      --button-padding: 12px 24px;
+      --button-font-size: 16px;
+      --link-color: #2f6e20;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 80px;
+      margin: 0;
+      height: 100vh;
+    }
+
+    h1 {
+      color: var(--text-color);
+      margin-bottom: 25px;
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 40px 30px;
+      border-radius: var(--border-radius);
+      box-shadow: 0 8px 25px var(--shadow-color);
+      text-align: center;
+      width: var(--container-width);
+      backdrop-filter: blur(5px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .container::before {
+      content: "";
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      width: 120px;
+      height: 120px;
+      background: rgba(86, 171, 47, 0.2);
+      border-radius: 50%;
+      z-index: 0;
+    }
+
+    .container::after {
+      content: "";
+      position: absolute;
+      bottom: -50px;
+      left: -30px;
+      width: 100px;
+      height: 100px;
+      background: rgba(168, 224, 99, 0.25);
+      border-radius: 50%;
+      z-index: 0;
+    }
+
+    .container * {
+      position: relative;
+      z-index: 1;
+    }
+
+    button {
+      padding: var(--button-padding);
+      background: linear-gradient(45deg, #3d7d1c, #4caf50);
+      color: white;
+      border: none;
+      border-radius: var(--button-radius);
+      cursor: pointer;
+      margin: 10px;
+      font-size: var(--button-font-size);
+      font-weight: 600;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    a {
+      display: block;
+      margin-top: 20px;
+      color: var(--link-color);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    a:hover {
+      color: #4caf50;
+    }
+
+    /* Icono planta */
+    .plant-icon {
+      width: 50px;
+      height: 50px;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <!-- Icono de planta -->
+    <svg class="plant-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+      stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round"
+        d="M12 20c4.418 0 8-1.79 8-4s-3.582-4-8-4-8 1.79-8 4 3.582 4 8 4zM12 12V4m0 0c1.5 0 2.5.5 3 1.5M12 4c-1.5 0-2.5.5-3 1.5" />
+    </svg>
+
+    <h1 id="login-title">Iniciar Sesión</h1>
+
+    <form id="loginForm" action="/login" method="POST">
+      <button type="submit" id="login-btn">Iniciar</button>
+    </form>
+
+    <a href="/register" id="register-link">¿No tienes cuenta? Regístrate aquí</a>
+  </div>
+
+  <script>
+    const config = {
+      registerLink: "/register",
+      loginAction: "/login",
+      titles: {
+        page: "SARI",
+        form: "Bienvenido a SARI",
+        button: "Iniciar",
+        register: "¿No tienes cuenta? Regístrate aquí"
+      }
+    };
+
+    window.onload = () => {
+      document.title = config.titles.page;
+      document.getElementById("login-title").textContent = config.titles.form;
+      document.getElementById("login-btn").textContent = config.titles.button;
+      document.getElementById("register-link").textContent = config.titles.register;
+      document.getElementById("register-link").href = config.registerLink;
+      document.getElementById("loginForm").action = config.loginAction;
+    };
+  </script>
+</body>
+
+</html>

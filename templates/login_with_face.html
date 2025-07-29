@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Inicio con Reconocimiento Facial</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 30px;
+    }
+    h1 {
+      margin-bottom: 20px;
+      color: #00e6e6;
+    }
+    #video-box {
+      border: 5px solid #00e6e6;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    video, img {
+      width: 640px;
+      height: 480px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 25px;
+      background-color: #00e6e6;
+      border: none;
+      border-radius: 8px;
+      color: #111;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Inicio de Sesión por Rostro</h1>
+  <div id="video-box">
+    <img src="{{ url_for('video') }}" alt="Cámara en vivo">
+  </div>
+  <form action="/login" method="POST">
+    <button type="submit">Iniciar Sesión</button>
+  </form>
+</body>
+</html>
